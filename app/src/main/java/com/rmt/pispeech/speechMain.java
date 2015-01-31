@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
         private static final int REQUEST_CODE = 1234;
         private ListView resultList;
         Button speakButton;
+        EditText ipAddress;
 
         @Override
         public void onCreate(final Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ import java.util.ArrayList;
             speakButton = (Button) findViewById(R.id.speakButton);
 
             resultList = (ListView) findViewById(R.id.listView);
+            ipAddress = (EditText) findViewById(R.id.ipAddress);
+
 
             // Disable button if no recognition service is present
             PackageManager pm = getPackageManager();
@@ -85,8 +89,9 @@ import java.util.ArrayList;
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 resultList.setAdapter(new ArrayAdapter<String>(this,
                         android.R.layout.simple_list_item_1, matches));
-                Intent i = new Intent(this, drivePass.class);
+                Intent i = new Intent(this, speechSender.class);
                 i.putExtra("match", matches.get(0));
+                i.putExtra("ip", ipAddress.getText().toString());
                 startActivity(i);
             }
             super.onActivityResult(requestCode, resultCode, data);
